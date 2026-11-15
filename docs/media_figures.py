@@ -19,7 +19,7 @@ def frame_at(cap, sec):
     return Image.fromarray(im[..., ::-1]) if ok else None
 
 
-def video_preview(width=420, fps=5, clips=((3, 2.6), (15, 2.6), (40, 2.6), (49, 2.6))):
+def video_preview_gif(width=420, fps=5, clips=((3, 2.6), (15, 2.6), (40, 2.6), (49, 2.6))):
     cap = cv2.VideoCapture(str(VIDEO))
     frames = []
     for s, d in clips:
@@ -51,7 +51,7 @@ def banner():
 
 
 if __name__ == "__main__":
-    video_preview()
+    # video_preview_gif()  (the README now embeds the video itself)
     banner()
     for f in ("golf_cart_preview.gif", "banner.png"):
         print(f, round((OUT / f).stat().st_size / 1e6, 2), "MB")

@@ -23,10 +23,9 @@
 
 ## 2 · The autonomous golf cart
 
-<p align="center">
-  <a href="docs/media/golf_cart_autonomous_drive.mp4"><img src="docs/figures/golf_cart_preview.gif" alt="The golf cart driving autonomously on the IIT Bombay campus, with the live LiDAR map on the laptop" width="75%"></a>
-  <br><sub>The cart driving itself on campus. The laptop shows the live 3-D LiDAR map. <b><a href="docs/media/golf_cart_autonomous_drive.mp4">▶ full video (55 s)</a></b></sub>
-</p>
+https://github.com/user-attachments/assets/b9e95105-fa57-4705-83a2-6e73e08190b0
+
+<p align="center"><sub>The cart driving itself on the IIT Bombay campus. The laptop shows the live 3-D LiDAR map.</sub></p>
 
 ```mermaid
 flowchart TD
