@@ -73,7 +73,6 @@ RoboRacer (formerly F1TENTH) races 1/10-scale cars that must drive fully autonom
 | **Hokuyo 2-D LiDAR** | the main sensor: a 270° scan of the track walls, used for mapping, localisation and obstacle detection |
 | **NVIDIA Jetson Nano** | on-board computer running ROS 2: the particle filter, the racing controller and the mux, all in real time on the car |
 | **VESC motor controller** | drives the motor and steering servo, and reports wheel odometry |
-| IMU | angular rate for odometry and for Cartographer's scan + IMU mode |
 | 1/10-scale RC chassis | Ackermann steering, 0.33 m wheelbase |
 
 Our software stack:
@@ -83,7 +82,7 @@ flowchart TD
     Li["Hokuyo 2-D LiDAR"] --> C["Cartographer<br/>build the track map<br/>(before the race)"]
     C --> Map[("occupancy map")]
     Li --> PF["Particle filter (Jetson Nano)<br/>where am I on the map?"]
-    O["odometry + IMU"] --> PF
+    O["wheel odometry"] --> PF
     Map --> PF
     PF --> A["ALPP<br/>adaptive pure pursuit<br/>on the raceline"]
     Li --> F["FTG<br/>follow the gap"]
@@ -108,7 +107,7 @@ Before racing, the car is driven around the track once while Cartographer builds
 
 <p align="center"><img src="docs/figures/mapping.gif" alt="Animation: the occupancy grid of the race track growing scan by scan as the car drives a lap" width="70%"></p>
 
-Our Cartographer setups for mapping with LiDAR alone, LiDAR + IMU, and localisation in a saved map are in [`roboracer/mapping/cartographer`](roboracer/mapping/cartographer).
+Our Cartographer setups for mapping and for localisation in a saved map are in [`roboracer/mapping/cartographer`](roboracer/mapping/cartographer).
 
 ### Localisation with a particle filter
 
@@ -193,7 +192,7 @@ docs/                 photos, video, figures and the scripts that make the anima
 | `golf_cart/perception/road_segmentation` | YOLOv8 road-segmentation model (`best.pt`) and its training notebook |
 | `roboracer/controller` | `adaptive_pure_pursuit.py` (ALPP), and a simulator raceline |
 | `roboracer/localization/particle_filter` | particle filter (based on the open-source JMU ROS 2 particle filter, MIT licence) and its configs |
-| `roboracer/mapping/cartographer` | Cartographer configs and launch files: scan-only mapping, scan + IMU, localisation |
+| `roboracer/mapping/cartographer` | Cartographer configs and launch files for mapping and localisation |
 | `roboracer/maps` | the competition track map |
 | `vision_transformer/` | `vit/model.py`, `vit/data.py`, `train.py`, `predict.py` |
 | `docs/` | `make_figures.py` + `track_sim.py` (RoboRacer animations), `vit_figures.py` (ViT animations), `media_figures.py` (banner, video preview) |
