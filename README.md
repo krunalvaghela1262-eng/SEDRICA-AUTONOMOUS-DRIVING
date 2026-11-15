@@ -29,7 +29,7 @@
 </p>
 
 ```mermaid
-flowchart LR
+flowchart TD
     L["3 × LiDAR<br/>top · left · right"] --> M["lidar_merger<br/>one point cloud<br/>(auto-calibrated extrinsics)"]
     M --> S["3-D LiDAR SLAM<br/>campus point-cloud map"]
     M --> N["NDT scan matching<br/>against the map"]
@@ -70,7 +70,7 @@ flowchart LR
 RoboRacer (formerly F1TENTH) races 1/10-scale cars that must drive fully autonomously with only on-board sensing: a 2-D LiDAR, wheel odometry and an IMU. Our stack:
 
 ```mermaid
-flowchart LR
+flowchart TD
     Li["2-D LiDAR"] --> C["Cartographer<br/>build the track map<br/>(before the race)"]
     C --> Map[("occupancy map")]
     Li --> PF["Particle filter<br/>where am I on the map?"]
