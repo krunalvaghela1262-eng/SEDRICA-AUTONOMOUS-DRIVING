@@ -66,13 +66,23 @@ flowchart TD
 </tr>
 </table>
 
-RoboRacer (formerly F1TENTH) races 1/10-scale cars that must drive fully autonomously with only on-board sensing: a 2-D LiDAR, wheel odometry and an IMU. Our stack:
+RoboRacer (formerly F1TENTH) races 1/10-scale cars that must drive fully autonomously, using only what is on board.
+
+| Hardware | Role in our car |
+|---|---|
+| **Hokuyo 2-D LiDAR** | the main sensor: a 270° scan of the track walls, used for mapping, localisation and obstacle detection |
+| **NVIDIA Jetson Nano** | on-board computer running ROS 2: the particle filter, the racing controller and the mux, all in real time on the car |
+| **VESC motor controller** | drives the motor and steering servo, and reports wheel odometry |
+| IMU | angular rate for odometry and for Cartographer's scan + IMU mode |
+| 1/10-scale RC chassis | Ackermann steering, 0.33 m wheelbase |
+
+Our software stack:
 
 ```mermaid
 flowchart TD
-    Li["2-D LiDAR"] --> C["Cartographer<br/>build the track map<br/>(before the race)"]
+    Li["Hokuyo 2-D LiDAR"] --> C["Cartographer<br/>build the track map<br/>(before the race)"]
     C --> Map[("occupancy map")]
-    Li --> PF["Particle filter<br/>where am I on the map?"]
+    Li --> PF["Particle filter (Jetson Nano)<br/>where am I on the map?"]
     O["odometry + IMU"] --> PF
     Map --> PF
     PF --> A["ALPP<br/>adaptive pure pursuit<br/>on the raceline"]
@@ -102,10 +112,12 @@ Our Cartographer setups for mapping with LiDAR alone, LiDAR + IMU, and localisat
 
 ### Localisation with a particle filter
 
-During the race the car must keep track of where it is on that map, many times per second. A **particle filter** keeps thousands of guesses (particles) of the car's pose:
+During the race the car must keep track of where it is on that map, many times per second, on the **Jetson Nano** itself. A **particle filter** keeps thousands of guesses (particles) of the car's pose:
 1. **predict:** move every particle by the odometry, with noise;
 2. **weight:** project the real LiDAR scan from each particle's pose. A particle scores high if the beam end-points land on walls of the map (a *likelihood field*);
 3. **resample:** keep the likely particles and drop the unlikely ones.
+
+The likelihood-field sensor model is what makes this cheap enough for the Nano: instead of ray-casting every beam from every particle, each beam end-point needs only a single lookup in a precomputed distance-to-wall map.
 
 Started with no idea where the car is, the red particles cover the whole map, split into a few competing clusters wherever the track looks alike, then lock onto the car:
 
