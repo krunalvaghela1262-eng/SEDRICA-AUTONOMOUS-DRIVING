@@ -1,0 +1,6 @@
+device_id: 0
+path: /home/jetson/data/callib/top/1765694672747064679.pcd
+device_id: 1
+path: /home/jetson/data/callib/front/1765694672706684522.pcd
+device_id: 2
+path: /home/jetson/data/callib/back/1765694672708583149.pcd

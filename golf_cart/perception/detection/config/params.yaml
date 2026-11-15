@@ -1,0 +1,9 @@
+/**:
+  ros__parameters:
+    # --- Z-AXIS (DEPTH) PARAMETERS ---
+    emergency_distance_m: 6.0   # Max distance (in meters) to consider an obstacle a threat
+    min_distance_filter_m: 0.5  # Min distance (in meters) to ignore sensor noise/artifacts
+
+    # --- CORRIDOR (X & Y AXES) PARAMETERS ---
+    max_lateral_m: 1.0          # Max absolute lateral offset (in meters) from center (X-axis)
+    max_vertical_m: 0.5         # Max absolute vertical offset (in meters) from center (Y-axis)
